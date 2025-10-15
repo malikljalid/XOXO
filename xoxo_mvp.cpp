@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <ctime>
 
-enum enPlayerSymbol     { X, O };
+enum enPlayerSymbol     { X='X', O='O' };
 enum enGameWinner       { PLAYER, COMPUTER, DRAW };
 
 struct stPlayer
@@ -36,16 +36,72 @@ stPlat initPlat(void)
     return (Plat);
 }
 
-void setPlayerChoice(stPlayer &Player, short int Choice)
+short int readPlayerChoice(void)
 {
-    Player.Choice = Choice;
+    short int Choice;
+
+    std::cout << "Where you want to Draw : ";
+    std::cin >> Choice;
+
+    return (Choice);
 }
 
 void setPlayerChoice(stPlat &Plat, stPlayer Player)
 {
     char xo[2] = {'X', 'O'};
 
-    Plat.Index[Player.Choice] = xo[Player.Symbol];//
+    Plat.Index[Player.Choice] = xo[Player.Symbol];
+}
+
+enGameWinner someOneWins(stPlat Plat)
+{
+    // hard code the posible condition
+    if ((Plat.Index[0] == Plat.Index[1] && Plat.Index[1] == Plat.Index[2]) ||
+        (Plat.Index[3] == Plat.Index[4] && Plat.Index[4] == Plat.Index[5]) ||
+        (Plat.Index[6] == Plat.Index[7] && Plat.Index[7] == Plat.Index[8]) ||
+
+        (Plat.Index[0] == Plat.Index[3] && Plat.Index[3] == Plat.Index[6]) ||
+        (Plat.Index[1] == Plat.Index[4] && Plat.Index[4] == Plat.Index[7]) ||
+        (Plat.Index[2] == Plat.Index[5] && Plat.Index[5] == Plat.Index[8]) ||
+
+        (Plat.Index[0] == Plat.Index[4] && Plat.Index[4] == Plat.Index[8]) ||
+        (Plat.Index[2] == Plat.Index[4] && Plat.Index[4] == Plat.Index[6]))
+    {
+        if (Plat.Index[0] == X)
+            return (enGameWinner::PLAYER);
+        else
+            return (enGameWinner::COMPUTER);
+    }
+    return (enGameWinner::DRAW);
+}
+
+bool isFull(stPlat Plat)
+{
+    for (int i = 0; i < 9; i++)
+    {
+        if (Plat.Index[i] != 'X' && Plat.Index[i] != 'O')
+            return (false); 
+    }
+    return (true);
+}
+
+void gameLoop(void)
+{
+    stXoxoGame Game;
+
+    Game.Plat = initPlat();
+
+    while (someOneWins(Game.Plat) != PLAYER || someOneWins(Game.Plat) != COMPUTER)
+    {
+        Game.Player1.Choice = readPlayerChoice();
+        Game.Computer.Choice = readPlayerChoice();
+
+        setPlayerChoice(Game.Plat, Game.Player1);
+        setPlayerChoice(Game.Plat, Game.Computer);
+
+        if (isFull(Game.Plat))
+            break;
+    }
 }
 
 void showPlat(stPlat Plat)
@@ -65,25 +121,7 @@ void showPlat(stPlat Plat)
 
 int main(void)
 {
-    stPlat      Plat = initPlat();
-    stPlayer    Me;
-
-    Me.Symbol = X;
-    Me.Choice = 4;
-
-    showPlat(Plat);
-
-    setPlayerChoice(Plat, Me);
-    showPlat(Plat);
-
-    Me.Choice = 1;
-    setPlayerChoice(Plat, Me);
-    showPlat(Plat);
-
-
-    Me.Choice = 8;
-    setPlayerChoice(Plat, Me);
-    showPlat(Plat);
+    gameLoop();
 
     return (0);
 }
