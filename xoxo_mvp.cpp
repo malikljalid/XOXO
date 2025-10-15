@@ -45,7 +45,7 @@ void setPlayerChoice(stPlat &Plat, stPlayer Player)
 {
     char xo[2] = {'X', 'O'};
 
-    Plat.Index[Player.Choice] = xo[Player.Symbol];
+    Plat.Index[Player.Choice] = xo[Player.Symbol];//
 }
 
 void showPlat(stPlat Plat)
