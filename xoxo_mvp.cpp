@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <ctime>
 
+enum enPlatCapacity     { FULL=9 };
 enum enPlayerSymbol     { X='X', O='O' };
 enum enGameWinner       { PLAYER, COMPUTER, DRAW };
 
@@ -13,8 +14,8 @@ struct stPlayer
 
 struct stPlat
 {
-    char Index[9];
-    //bool isFull;
+    char        Index[FULL];
+    short int   Capacity;
 };
 
 struct stXoxoGame
@@ -34,6 +35,8 @@ stPlat initPlat(void)
         Plat.Index[i] = ' ';
     }
 
+    Plat.Capacity = 0;
+
     return (Plat);
 }
 
@@ -51,6 +54,7 @@ short int readPlayerChoice(int PlayerNumber)
 void setPlayerChoiceToPlat(stPlat &Plat, stPlayer Player)
 {
     Plat.Index[Player.Choice] = Player.Symbol;
+    Plat.Capacity++;
 }
 
 enGameWinner checkPlat(stPlat Plat)
@@ -85,12 +89,7 @@ enGameWinner checkPlat(stPlat Plat)
 
 bool isFull(stPlat Plat)
 {
-    for (int i = 0; i < 9; i++)
-    {
-        if (Plat.Index[i] != 'X' && Plat.Index[i] != 'O')
-            return (false); 
-    }
-    return (true);
+    return (Plat.Capacity == enPlatCapacity::FULL);
 }
 
 void showPlat(stPlat Plat)
@@ -103,7 +102,7 @@ void showPlat(stPlat Plat)
     std::cout << "| " << 3 <<" | " << 4 <<" | " << 5 <<" |\n";
     std::cout << "-------------\n";
     std::cout << "| " << 6 <<" | " << 7 <<" | " << 8 <<" |\n";
-    std::cout << "-------------\n";
+    std::cout << "-------------\n\n";
 
     std::cout << "-------------\n";
     std::cout << "| " << Plat.Index[0] <<" | " << Plat.Index[1] <<" | " << Plat.Index[2] <<" |\n";
@@ -150,7 +149,7 @@ void gameLoop(void)
     while (1)
     {
         Game.Player1.Choice  = readPlayerChoice(0);
-        setPlayerChoiceToPlat(Game.Plat, Game.Player1);
+        setPlayerChoiceToPlat(Game.Plat, Game.Player1); //increment plat size for isFull check later insteaf of iterating in for()
         showPlat(Game.Plat);
         if (checkPlat(Game.Plat) == PLAYER)
         {
