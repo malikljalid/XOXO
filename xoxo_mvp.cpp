@@ -98,6 +98,14 @@ void showPlat(stPlat Plat)
     std::cout << std::endl;
 
     std::cout << "-------------\n";
+    std::cout << "| " << 0 <<" | " << 1 <<" | " << 2 <<" |\n";
+    std::cout << "-------------\n";
+    std::cout << "| " << 3 <<" | " << 4 <<" | " << 5 <<" |\n";
+    std::cout << "-------------\n";
+    std::cout << "| " << 6 <<" | " << 7 <<" | " << 8 <<" |\n";
+    std::cout << "-------------\n";
+
+    std::cout << "-------------\n";
     std::cout << "| " << Plat.Index[0] <<" | " << Plat.Index[1] <<" | " << Plat.Index[2] <<" |\n";
     std::cout << "-------------\n";
     std::cout << "| " << Plat.Index[3] <<" | " << Plat.Index[4] <<" | " << Plat.Index[5] <<" |\n";
