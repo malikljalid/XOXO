@@ -18,7 +18,7 @@ struct stPlat
     short int   Capacity;
 };
 
-struct stXoxoGame
+struct stGame
 {
     stPlat          Plat;
     stPlayer        Player1;
@@ -40,12 +40,11 @@ stPlat initPlat(void)
     return (Plat);
 }
 
-short int readPlayerChoice(int PlayerNumber)
+short int readPlayerChoice(enPlayerSymbol Symbol)
 {
     short int Choice;
-    std::string name[2] = {"Player", "Computer"};
 
-    std::cout << name[PlayerNumber] << " turn : ";
+    std::cout << (char)Symbol << " player turn : ";
     std::cin >> Choice;
 
     return (Choice);
@@ -89,7 +88,7 @@ enGameWinner checkPlat(stPlat Plat)
 
 bool isFull(stPlat Plat)
 {
-    return (Plat.Capacity == enPlatCapacity::FULL);
+    return (Plat.Capacity >= enPlatCapacity::FULL);
 }
 
 void showPlat(stPlat Plat)
@@ -138,17 +137,29 @@ void setPlayersSymbol(stPlayer &Player1, stPlayer &Computer)
     }
 }
 
-void gameLoop(void)
+stGame initGame(void)
 {
-    stXoxoGame Game;
+    stGame Game;
 
     Game.Plat = initPlat();
     setPlayersSymbol(Game.Player1, Game.Computer);
     showPlat(Game.Plat);
 
+    return (Game);
+}
+
+enGameWinner playerTurn(stPlayer &Player, stPlat &Plat)
+{
+
+}
+
+void gameLoop(void)
+{
+    stGame Game = initGame();
+
     while (1)
     {
-        Game.Player1.Choice  = readPlayerChoice(0);
+        Game.Player1.Choice  = readPlayerChoice();
         setPlayerChoiceToPlat(Game.Plat, Game.Player1); //increment plat size for isFull check later insteaf of iterating in for()
         showPlat(Game.Plat);
         if (checkPlat(Game.Plat) == PLAYER)
@@ -156,7 +167,8 @@ void gameLoop(void)
             std::cout << "\nPLAYER1 Won !\n";
             break;
         }
-
+        if (isFull(Game.Plat))
+            break;
 
         Game.Computer.Choice = readPlayerChoice(1);
         setPlayerChoiceToPlat(Game.Plat, Game.Computer);
@@ -166,7 +178,6 @@ void gameLoop(void)
             std::cout << "\nCOMPUTER Won!\n";
             break;
         }
-
         if (isFull(Game.Plat))
             break;
     }
