@@ -4,7 +4,7 @@
 
 enum enPlatCapacity     { FULL=9 };
 enum enPlayerSymbol     { X='X', O='O' };
-enum enGameWinner       { PLAYER, COMPUTER, DRAW };
+enum enGameWinner       { PLAYER, COMPUTER, DRAW, UNKNOWN };
 
 struct stPlayer
 {
@@ -83,7 +83,7 @@ enGameWinner checkPlat(stPlat Plat)
         (Plat.Index[2] == O && Plat.Index[4] == O && Plat.Index[6] == O))
         return (enGameWinner::COMPUTER);
 
-    return (enGameWinner::DRAW);
+    return (enGameWinner::UNKNOWN);
 }
 
 bool isFull(stPlat Plat)
@@ -150,7 +150,19 @@ stGame initGame(void)
 
 enGameWinner playerTurn(stPlayer &Player, stPlat &Plat)
 {
+    std::string  players[2] = {"\nPLAYER1", "\nCOMPUTER"};
+    enGameWinner Winner;
 
+    Player.Choice  = readPlayerChoice(Player.Symbol);
+    setPlayerChoiceToPlat(Plat, Player); //increment plat size for isFull check later insteaf of iterating in for()
+    showPlat(Plat);
+    Winner = checkPlat(Plat);
+
+    if (Winner != UNKNOWN)
+        return (Winner);
+
+    if (isFull(Plat))
+        return (enGameWinner::DRAW);
 }
 
 void gameLoop(void)
@@ -159,26 +171,12 @@ void gameLoop(void)
 
     while (1)
     {
-        Game.Player1.Choice  = readPlayerChoice();
-        setPlayerChoiceToPlat(Game.Plat, Game.Player1); //increment plat size for isFull check later insteaf of iterating in for()
-        showPlat(Game.Plat);
-        if (checkPlat(Game.Plat) == PLAYER)
-        {
-            std::cout << "\nPLAYER1 Won !\n";
-            break;
-        }
-        if (isFull(Game.Plat))
+        Game.Winner = playerTurn(Game.Player1, Game.Plat);
+        if (Game.Winner != enGameWinner::UNKNOWN)
             break;
 
-        Game.Computer.Choice = readPlayerChoice(1);
-        setPlayerChoiceToPlat(Game.Plat, Game.Computer);
-        showPlat(Game.Plat);
-        if(checkPlat(Game.Plat) == COMPUTER)
-        {
-            std::cout << "\nCOMPUTER Won!\n";
-            break;
-        }
-        if (isFull(Game.Plat))
+        Game.Winner = playerTurn(Game.Computer, Game.Plat);
+        if (Game.Winner != enGameWinner::UNKNOWN)
             break;
     }
 }
