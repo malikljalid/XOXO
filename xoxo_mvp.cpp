@@ -165,6 +165,30 @@ enGameWinner playerTurn(stPlayer &Player, stPlat &Plat)
         return (enGameWinner::DRAW);
 }
 
+void showWinner(enGameWinner Winner)
+{
+    switch (Winner)
+    {
+        case (PLAYER) :
+        {
+            std::cout << "Player Won\n";
+            break;
+        }
+        case (COMPUTER) :
+        {
+            std::cout << "Computer Won\n";
+            break;
+        }
+        case (DRAW) :
+        {
+            std::cout << "DRAW, No One Won\n";
+            break;
+        }
+        default :
+            std::cout << "ERROR\n";
+    }
+}
+
 void gameLoop(void)
 {
     stGame Game = initGame();
@@ -179,6 +203,8 @@ void gameLoop(void)
         if (Game.Winner != enGameWinner::UNKNOWN)
             break;
     }
+
+    showWinner(Game.Winner);
 }
 
 int main(void)
