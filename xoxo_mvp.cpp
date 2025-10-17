@@ -44,7 +44,7 @@ short int readPlayerChoice(enPlayerSymbol Symbol)
 {
     short int Choice;
 
-    std::cout << (char)Symbol << " player turn : ";
+    std::cout << " player " << (char)Symbol << " turn : ";
     std::cin >> Choice;
 
     return (Choice);
@@ -163,6 +163,8 @@ enGameWinner playerTurn(stPlayer &Player, stPlat &Plat)
 
     if (isFull(Plat))
         return (enGameWinner::DRAW);
+
+    return (enGameWinner::UNKNOWN);
 }
 
 void showWinner(enGameWinner Winner)
@@ -213,3 +215,7 @@ int main(void)
 
     return (0);
 }
+
+// add "this spot is taken in plat" feuature
+// make playerX and playerO instead of player vs computer 
+// set playerX enum to player sturct member type or something
