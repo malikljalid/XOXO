@@ -49,7 +49,7 @@ short int readPlayerChoice(enPlayerSymbol Symbol, stPlat Plat)
 
     while (Plat.Index[Choice] != ' ')
     {
-        std::cout << "Area already taken!\n";
+        std::cout << "Spot already taken!\n";
         std::cout << "Player " << (char)Symbol << " turn : ";
         std::cin >> Choice;
     }
