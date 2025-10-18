@@ -40,12 +40,19 @@ stPlat initPlat(void)
     return (Plat);
 }
 
-short int readPlayerChoice(enPlayerSymbol Symbol)
+short int readPlayerChoice(enPlayerSymbol Symbol, stPlat Plat)
 {
     short int Choice;
 
-    std::cout << " player " << (char)Symbol << " turn : ";
+    std::cout << "Player " << (char)Symbol << " turn : ";
     std::cin >> Choice;
+
+    while (Plat.Index[Choice] != ' ')
+    {
+        std::cout << "Area already taken!\n";
+        std::cout << "Player " << (char)Symbol << " turn : ";
+        std::cin >> Choice;
+    }
 
     return (Choice);
 }
@@ -153,7 +160,7 @@ enGameWinner playerTurn(stPlayer &Player, stPlat &Plat)
     std::string  players[2] = {"\nPLAYER1", "\nCOMPUTER"};
     enGameWinner Winner;
 
-    Player.Choice  = readPlayerChoice(Player.Symbol);
+    Player.Choice  = readPlayerChoice(Player.Symbol, Plat);
     setPlayerChoiceToPlat(Plat, Player); //increment plat size for isFull check later insteaf of iterating in for()
     showPlat(Plat);
     Winner = checkPlat(Plat);
