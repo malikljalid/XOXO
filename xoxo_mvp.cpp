@@ -4,7 +4,7 @@
 
 enum enPlatCapacity     { FULL=9 };
 enum enPlayerSymbol     { X='X', O='O' };
-enum enGameWinner       { PLAYER, COMPUTER, DRAW, UNKNOWN };
+enum enGameWinner       { PLAYERX, PLAYERO, DRAW, UNKNOWN };
 
 struct stPlayer
 {
@@ -21,8 +21,8 @@ struct stPlat
 struct stGame
 {
     stPlat          Plat;
-    stPlayer        Player1;
-    stPlayer        Computer;
+    stPlayer        PlayerX;
+    stPlayer        PlayerO;
     enGameWinner    Winner;
 };
 
@@ -76,7 +76,7 @@ enGameWinner checkPlat(stPlat Plat)
 
         (Plat.Index[0] == X && Plat.Index[4] == X && Plat.Index[8] == X) ||
         (Plat.Index[2] == X && Plat.Index[4] == X && Plat.Index[6] == X))
-        return (enGameWinner::PLAYER);
+        return (enGameWinner::PLAYERX);
 
     if ((Plat.Index[0] == O && Plat.Index[1] == O && Plat.Index[2] == O) ||
         (Plat.Index[3] == O && Plat.Index[4] == O && Plat.Index[5] == O) ||
@@ -88,7 +88,7 @@ enGameWinner checkPlat(stPlat Plat)
 
         (Plat.Index[0] == O && Plat.Index[4] == O && Plat.Index[8] == O) ||
         (Plat.Index[2] == O && Plat.Index[4] == O && Plat.Index[6] == O))
-        return (enGameWinner::COMPUTER);
+        return (enGameWinner::PLAYERO);
 
     return (enGameWinner::UNKNOWN);
 }
@@ -149,7 +149,7 @@ stGame initGame(void)
     stGame Game;
 
     Game.Plat = initPlat();
-    setPlayersSymbol(Game.Player1, Game.Computer);
+    setPlayersSymbol(Game.PlayerX, Game.PlayerO);
     showPlat(Game.Plat);
 
     return (Game);
@@ -157,7 +157,7 @@ stGame initGame(void)
 
 enGameWinner playerTurn(stPlayer &Player, stPlat &Plat)
 {
-    std::string  players[2] = {"\nPLAYER1", "\nCOMPUTER"};
+    std::string  players[2] = {"\nPLAYER X", "\nPLAYER O"};
     enGameWinner Winner;
 
     Player.Choice  = readPlayerChoice(Player.Symbol, Plat);
@@ -178,14 +178,14 @@ void showWinner(enGameWinner Winner)
 {
     switch (Winner)
     {
-        case (PLAYER) :
+        case (PLAYERX) :
         {
-            std::cout << "Player Won\n";
+            std::cout << "Player X Won\n";
             break;
         }
-        case (COMPUTER) :
+        case (PLAYERO) :
         {
-            std::cout << "Computer Won\n";
+            std::cout << "Player O Won\n";
             break;
         }
         case (DRAW) :
@@ -204,11 +204,11 @@ void gameLoop(void)
 
     while (1)
     {
-        Game.Winner = playerTurn(Game.Player1, Game.Plat);
+        Game.Winner = playerTurn(Game.PlayerX, Game.Plat);
         if (Game.Winner != enGameWinner::UNKNOWN)
             break;
 
-        Game.Winner = playerTurn(Game.Computer, Game.Plat);
+        Game.Winner = playerTurn(Game.PlayerO, Game.Plat);
         if (Game.Winner != enGameWinner::UNKNOWN)
             break;
     }
@@ -223,6 +223,6 @@ int main(void)
     return (0);
 }
 
-// add "this spot is taken in plat" feuature
-// make playerX and playerO instead of player vs computer 
 // set playerX enum to player sturct member type or something
+
+// maybe above is achived.. next : add computer feature random values with taking drawed spots in count
