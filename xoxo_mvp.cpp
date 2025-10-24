@@ -27,10 +27,17 @@ struct stGame
     enGameWinner    Winner;
 };
 
-void textInColor(char C, int color)
+void cInColor(char C, int color)
 {
     std::cout << "\033[" << color << "m"; // setting the color code to console
     std::cout << C;
+    std::cout << "\033[0m";              // reseting the color console
+}
+
+void textInColor(std::string text, int color)
+{
+    std::cout << "\033[" << color << "m"; // setting the color code to console
+    std::cout << text;
     std::cout << "\033[0m";              // reseting the color console
 }
 
@@ -40,18 +47,16 @@ std::string show(char C)
     {
         case (X) :
         {
-            textInColor(C, RED);
+            cInColor(C, RED);
             break;
         }
         case (O) :
         {
-            textInColor(C, GREEN);
+            cInColor(C, GREEN);
             break;
         }
         default :
-        {
             std::cout << C;
-        }
     }
     return ("");
 }
@@ -68,6 +73,11 @@ stPlat initPlat(void)
     Plat.Capacity = 0;
 
     return (Plat);
+}
+
+short int readComputerChoice(enPlayerSymbol Symbol, stPlat Plat)
+{
+    
 }
 
 short int readPlayerChoice(enPlayerSymbol Symbol, stPlat Plat)
@@ -210,17 +220,17 @@ void showWinner(enGameWinner Winner)
     {
         case (PLAYERX) :
         {
-            std::cout << "Player X Won\n";
+            textInColor("Player X Won\n", RED);
             break;
         }
         case (PLAYERO) :
         {
-            std::cout << "Player O Won\n";
+            textInColor("Player O Won\n", GREEN);
             break;
         }
         case (DRAW) :
         {
-            std::cout << "DRAW, No One Won\n";
+            textInColor("DRAW, No One Won\n", YELLOW);
             break;
         }
         default :
@@ -248,6 +258,8 @@ void gameLoop(void)
 
 int main(void)
 {
+    srand((unsigned int)time(NULL));
+
     gameLoop();
 
     return (0);
