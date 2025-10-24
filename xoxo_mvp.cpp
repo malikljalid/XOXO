@@ -259,5 +259,3 @@ int main(void)
 
     return (0);
 }
-
-// maybe above is achived.. next : add computer feature random values with taking drawed spots in count
