@@ -75,11 +75,6 @@ stPlat initPlat(void)
     return (Plat);
 }
 
-short int readComputerChoice(enPlayerSymbol Symbol, stPlat Plat)
-{
-    
-}
-
 short int readPlayerChoice(enPlayerSymbol Symbol, stPlat Plat)
 {
     short int Choice;
