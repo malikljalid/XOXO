@@ -5,6 +5,7 @@
 enum enPlatCapacity     { FULL=9 };
 enum enPlayerSymbol     { X='X', O='O' };
 enum enGameWinner       { PLAYERX, PLAYERO, DRAW, UNKNOWN };
+enum enColors           { RED=31, GREEN=32, YELLOW=33 };
 
 struct stPlayer
 {
@@ -25,6 +26,35 @@ struct stGame
     stPlayer        PlayerO;
     enGameWinner    Winner;
 };
+
+void textInColor(char C, int color)
+{
+    std::cout << "\033[" << color << "m"; // setting the color code to console
+    std::cout << C;
+    std::cout << "\033[0m";              // reseting the color console
+}
+
+std::string show(char C)
+{
+    switch (C)
+    {
+        case (X) :
+        {
+            textInColor(C, RED);
+            break;
+        }
+        case (O) :
+        {
+            textInColor(C, GREEN);
+            break;
+        }
+        default :
+        {
+            std::cout << C;
+        }
+    }
+    return ("");
+}
 
 stPlat initPlat(void)
 {
@@ -111,11 +141,11 @@ void showPlat(stPlat Plat)
     std::cout << "-------------\n\n";
 
     std::cout << "-------------\n";
-    std::cout << "| " << Plat.Index[0] <<" | " << Plat.Index[1] <<" | " << Plat.Index[2] <<" |\n";
+    std::cout << "| " << show(Plat.Index[0]) <<" | " << show(Plat.Index[1]) <<" | " << show(Plat.Index[2]) <<" |\n";
     std::cout << "-------------\n";
-    std::cout << "| " << Plat.Index[3] <<" | " << Plat.Index[4] <<" | " << Plat.Index[5] <<" |\n";
+    std::cout << "| " << show(Plat.Index[3]) <<" | " << show(Plat.Index[4]) <<" | " << show(Plat.Index[5]) <<" |\n";
     std::cout << "-------------\n";
-    std::cout << "| " << Plat.Index[6] <<" | " << Plat.Index[7] <<" | " << Plat.Index[8] <<" |\n";
+    std::cout << "| " << show(Plat.Index[6]) <<" | " << show(Plat.Index[7]) <<" | " << show(Plat.Index[8]) <<" |\n";
     std::cout << "-------------\n";
 
     std::cout << std::endl;
@@ -222,7 +252,5 @@ int main(void)
 
     return (0);
 }
-
-// set playerX enum to player sturct member type or something
 
 // maybe above is achived.. next : add computer feature random values with taking drawed spots in count
